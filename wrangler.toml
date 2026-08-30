@@ -1,0 +1,23 @@
+name = "video-control-bot"
+main = "src/index.js"
+compatibility_date = "2026-08-01"
+
+# Drains the queue every minute (checks GitHub Actions slot, dispatches next task)
+[triggers]
+crons = ["* * * * *"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "bot-db"
+database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+
+# Secrets (set with `wrangler secret put NAME`, do NOT put real values here):
+#   BOT_TOKEN        - Telegram bot token from @BotFather
+#   GITHUB_TOKEN      - GitHub PAT with 'repo' + 'workflow' scope
+#   REPO_NAME         - e.g. "yourusername/your-repo"
+#   WEBHOOK_SECRET    - any random string you choose, used to verify Telegram calls
+#
+# Plain vars (safe to keep here, not secret):
+[vars]
+MAX_CONCURRENT = "2"
+MAX_QUEUED_PER_USER = "3"

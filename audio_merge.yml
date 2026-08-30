@@ -1,0 +1,61 @@
+name: Audio Merge Pipeline
+
+on:
+  workflow_dispatch:
+    inputs:
+      video_id:
+        description: 'Telegram Video Link'
+        required: true
+      audio_id:
+        description: 'Telegram Audio Link'
+        required: true
+      chat_id:
+        description: 'Telegram Chat ID'
+        required: true
+      user_id:
+        description: 'User ID'
+        required: false
+        default: 'none'
+      rename:
+        description: 'Output File Name'
+        required: false
+        default: 'output.mp4'
+      trigger_msg_id:
+        description: 'Trigger Message ID'
+        required: false
+        default: 'none'
+
+jobs:
+  merge_job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
+      - name: Install FFmpeg & Dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends ffmpeg
+          pip install --no-cache-dir -r requirements.txt
+
+      - name: Run Audio Merge Processor
+        env:
+          API_ID: ${{ secrets.API_ID }}
+          API_HASH: ${{ secrets.API_HASH }}
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          STRING_SESSION: ${{ secrets.STRING_SESSION }}
+          VIDEO_ID: ${{ github.event.inputs.video_id }}
+          AUDIO_ID: ${{ github.event.inputs.audio_id }}
+          CHAT_ID: ${{ github.event.inputs.chat_id }}
+          USER_ID: ${{ github.event.inputs.user_id }}
+          RENAME: ${{ github.event.inputs.rename }}
+          TRIGGER_MSG_ID: ${{ github.event.inputs.trigger_msg_id }}
+        run: |
+          python studio_audio.py
