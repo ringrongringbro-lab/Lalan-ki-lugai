@@ -9,7 +9,7 @@ crons = ["* * * * *"]
 [[d1_databases]]
 binding = "DB"
 database_name = "bot-db"
-database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+database_id = "bccc74dc-65a8-4ada-a79b-ecc00f49008d"
 
 # Secrets (set with `wrangler secret put NAME`, do NOT put real values here):
 #   BOT_TOKEN        - Telegram bot token from @BotFather
